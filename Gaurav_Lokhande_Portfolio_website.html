@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gaurav Lokhande - Automation Engineer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Global Styling */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #e0e0e0;
+      background: #000;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: url('frank_img.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      filter: brightness(0.6) contrast(1.1);
+      z-index: -2;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(10, 15, 30, 0.75);
+      z-index: -1;
+    }
+
+    /* Main Layout */
+    .main-container {
+      display: flex;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Sidebar Navigation */
+    nav {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(20px);
+      width: 220px;
+      position: fixed;
+      left: 0; top: 0;
+      height: 100vh;
+      border-right: 1px solid rgba(100,130,160,0.3);
+      padding: 2rem 0;
+      box-shadow: 2px 0 30px rgba(0,0,40,0.4);
+      z-index: 10;
+    }
+
+    nav ul {
+      list-style: none;
+    }
+
+    nav .nav-btn {
+      display: block;
+      background: transparent;
+      color: #a0b3f0;
+      border: none;
+      padding: 1.2rem 1.5rem;
+      width: 100%;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 0 20px 20px 0;
+      margin-bottom: 0.5rem;
+    }
+
+    nav .nav-btn:hover,
+    nav .nav-btn.active {
+      color: #fff;
+      background: rgba(0,102,204,0.25);
+      box-shadow: 0 8px 25px rgba(0,102,204,0.35);
+      transform: translateX(6px);
+    }
+
+    /* Home special button */
+    .nav-home {
+      background: rgba(0,102,150,0.35);
+      color: #a8d9f5;
+      font-weight: 600;
+    }
+    .nav-home:hover,
+    .nav-home.active { background: rgba(0,102,150,0.55); }
+
+    /* Content Panel */
+    .content {
+      margin-left: 220px;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Sections (default hidden) */
+    .section {
+      display: none;
+      width: 100%;
+      max-width: 850px;
+      background: rgba(20,30,50,0.95);
+      backdrop-filter: blur(15px);
+      padding: 4rem;
+      border-radius: 32px;
+      border: 1px solid rgba(100,130,180,0.4);
+      box-shadow: 0 32px 80px rgba(0,0,40,0.4);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.5s ease-in-out;
+    }
+
+    .section.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Home Page */
+    .home-page {
+      display: none;
+      text-align: center;
+      max-width: 900px;
+      width: 100%;
+    }
+    .home-page.active { display: block; }
+
+    .profile-photo {
+      width: 300px; height: 380px;
+      border-radius: 32px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 2rem;
+      border: 8px solid rgba(255,255,255,0.25);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    .home-name {
+      font-size: 4rem;
+      font-weight: 900;
+      background: linear-gradient(45deg, #667eea, #764ba2, #0066cc, #ffffff);
+      /* Full cross-browser support */
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -webtext-fill-color: transparent;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 30px rgba(102,126,234,0.8);
+      animation: nameGlow 3s ease-in-out infinite alternate;
+      letter-spacing: -0.03em;
+      }
+      
+    .home-bio {
+      font-size: 1.2rem;
+      color: #e0e0ff;
+      line-height: 1.6;
+      background: rgba(30,40,70,0.35);
+      border-radius: 24px;
+      border: 1px solid rgba(100,130,180,0.4);
+      padding: 2rem 1.5rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      margin: auto;
+      max-width: 650px;
+    }
+
+    /* Headings */
+    h2 {
+      font-size: 2.1rem;
+      color: #a8d9f5;
+      margin-bottom: 1.8rem;
+      font-weight: 600;
+    }
+
+    /* Experience + Education Item */
+    .experience-item {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(100,130,180,0.3);
+      padding-bottom: 1.2rem;
+      transition: background 0.3s ease;
+    }
+    .experience-item:last-child {
+      border-bottom: none;
+    }
+    .experience-item:hover {
+      background: rgba(40,55,90,0.4);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+    }
+
+    .job-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #d8e8ff;
+      margin-bottom: 0.4rem;
+    }
+    .job-meta {
+      display: flex;
+      justify-content: space-between;
+      color: #a0b3f0;
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .job-desc {
+      font-size: 0.95rem;
+      color: #b8c8ff;
+      line-height: 1.6;
+    }
+
+    /* Skills Grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(180px,1fr));
+      gap: 1rem;
+    }
+    .skill-tag {
+      background: rgba(40,55,90,0.75);
+      color: #e0e8ff;
+      text-align: center;
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(100,130,180,0.4);
+      transition: 0.3s;
+    }
+    .skill-tag:hover {
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      color: #fff;
+    }
+
+    /* Contact grid */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 1.2rem;
+    }
+    .contact-item a {
+      color: #80b8ff;
+      text-decoration: none;
+    }
+    .contact-item a:hover { color: #fff; }
+
+    /*LANGUAGE BAR*/
+.language-status {
+  position: absolute;
+  bottom: 2rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  padding: 1rem;
+  background: rgba(20, 30, 50, 0.9);
+  border: 1px solid #3b82f6;
+  border-radius: 12px;
+}
+
+.lang-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.lang-flag { font-size: 1.5rem; }
+.lang-name { 
+  flex: 1; 
+  color: #93c5fd;
+  font-weight: 600; 
+}
+
+.lang-prof { 
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #93c5fd;
+  background: none;  /* NO BACKGROUND */
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+}
+
+/* RESUME BUTTONS - VIEW + DOWNLOAD */
+.btn-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.btn-view, .btn-download {
+  flex: 1;
+  padding: 0.9rem 1.5rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.btn-view {
+  background: rgba(34,197,94,0.1);
+  color: #22c55e;
+  border-color: rgba(34,197,94,0.3);
+}
+
+.btn-view:hover {
+  background: rgba(34,197,94,0.2);
+  transform: translateY(-2px);
+}
+
+.btn-download {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.btn-download:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(102,126,234,0.5);
+}
+
+.btn-view.english { border-color: #10b981; color: #10b981; }
+.btn-view.german { border-color: #f59e0b; color: #f59e0b; }
+.btn-download.english { box-shadow: 0 5px 15px rgba(16,185,129,0.3); }
+.btn-download.german { box-shadow: 0 5px 15px rgba(245,158,11,0.3); }
+
+
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      nav {
+        position: static;
+        width: 100%;
+        height: auto;
+        display: flex;
+        justify-content: space-around;
+        border-right: none;
+      }
+      nav ul { display: flex; gap: 0.5rem; }
+      .content { margin-left: 0; padding: 1rem; }
+      .home-name { font-size: 2.5rem; }
+      .profile-photo { width: 230px; height: 280px; }
+    }
+  </style>
+</head>
+
+
+    
+    /*Responsive adjustments */
+<body>
+  <div class="main-container">
+    <nav> 
+      <ul>
+        <li><button data-target="#home" class="nav-btn nav-home active">Home</button></li>
+        <li><button data-target="#contact" class="nav-btn">Contact</button></li>
+        <li><button data-target="#skills" class="nav-btn">Skills</button></li>
+        <li><button data-target="#experience" class="nav-btn">Experience</button></li>
+        <li><button data-target="#Projects" class="nav-btn">Projects</button></li>
+        <li><button data-target="#education" class="nav-btn">Education</button></li>
+        <li><button data-target="#Resume" class="nav-btn">Resume</button></li>
+        <li><button data-target="#About" class="nav-btn">About</button></li>
+      </ul>
+    <div class="language-status">
+    <div class="lang-row">
+      <span class="lang-name">English</span>
+      <span class="lang-prof fluent">B2</span>
+    </div>
+    <div class="lang-row">
+      <span class="lang-name">Deutsch</span>
+      <span class="lang-prof">A2</span>
+    </div>
+  </div>
+</nav>
+
+    <div class="content">
+      <!-- Home -->
+      <section class="home-page active" id="home">
+        <img src="Gaurav_image.jpeg" alt="Gaurav Lokhande" class="profile-photo">
+        <h1 class="home-name">Gaurav Hemant Lokhande</h1>
+        <p class="home-bio">
+          Automation professional with 2 years of experience, currently pursuing a Master's in Automation and IT at TH Köln, 
+          seeking opportunities in Industrial IT and Industry 4.0.
+        </p>
+      </section>
+
+      <!-- Contact -->
+      <section class="section" id="contact">
+        <h2>Get In Touch</h2>
+        <div class="contact-grid">
+          <div class="contact-item"><strong>Location:</strong> 📍Gummersbach, Germany</div>
+          <div class="contact-item"><a href="tel:+491633059582">📞 +49 163 3059582</a></div>
+          <div class="contact-item"><a href="mailto:gauravlokhande1100@gmail.com">✉️ gauravlokhande1100@gmail.com</a></div>
+          <div class="contact-item"><a href="https://linkedin.com/in/gauravlokhande1100" target="_blank">💼 LinkedIn</a><br></div>
+          <div class="contact-item"><a href="https://github.com/gauravlokhande1100-prog" target="_blank">💻 GitHub</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section class="section" id="skills">
+        <h2>Skills & Technologies</h2>
+        <div class="skills-grid">
+          <div class="skill-tag">Siemens PLC (TIA Portal)</div>
+          <div class="skill-tag">SCADA (WinCC)</div>
+          <div class="skill-tag">HMI Designer</div>
+          <div class="skill-tag">GX Works3</div>
+           <div class="skill-tag">Report Building</div>
+          <div class="skill-tag">Python</div>
+          <div class="skill-tag">Raspberry Pi</div>
+          <div class="skill-tag">Web Development(CSS & HTML)</div>
+          <div class="skill-tag">Data Engineering(MSSQL & MySQL)</div>
+          <div class="skill-tag">HTML & CSS</div>
+          <div class="skill-tag">Git/GitHub</div>
+          <div class="skill-tag">Commissioning</div>
+          <div class="skill-tag">FAT/SAT</div>
+          <div class="skill-tag">Computer System Configuration (21CFR)</div>
+          <div class="skill-tag">Industrial Instrumentation</div>
+          <div class="skill-tag">Industrial Communication</div>
+        </div>
+      </section>
+
+      <!-- Experience -->
+      <section class="section" id="experience">
+        <h2>Professional Experience</h2>
+
+        <div class="experience-item">
+          <div class="job-title">Sr. System Engineer</div>
+          <div class="job-meta">
+            <span>ICAS Solution · Pune, India</span><span>10/2024 – 06/2025</span>
+          </div>
+          <div class="job-desc">
+            Experienced in working with PLC and SCADA systems, focusing on process automation, control, and real-time reporting 
+            along with FAT and SAT standards.
+          </div>
+        </div>
+
+        <div class="experience-item">
+          <div class="job-title">Commissioning Engineer</div>
+          <div class="job-meta">
+            <span>Cotmac Electronics · Pune, India</span><span>01/2024 – 10/2024</span>
+          </div>
+          <div class="job-desc">
+            Skilled in PLC programming, SCADA configuration, and system commissioning, with hands-on experience in 
+            <b><u>Process Automation</u></b> and reporting.
+          </div>
+        </div>
+
+        <div class="experience-item">
+          <div class="job-title">Trainee Engineer</div>
+          <div class="job-meta">
+            <span>Ingenious Engineering & Automation Pvt. Ltd · Pune, India</span><span>01/2023 – 01/2024</span>
+          </div>
+          <div class="job-desc">
+            Worked with PLC software such as <b>Simatic Manager</b>, <b>TIA Portal</b>, <b>GX Works3</b>, and HMI tools like 
+            <b>WinCC Explorer</b> and <b>GT Designer</b>.
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS SECTION -->
+<section class="section" id="Projects">
+  <h2>Key Projects</h2>
+ 
+      <!-- 1. FORECAST MODEL-->
+  <div class="experience-item">
+    <div class="job-title">Wind Power Forecasting</div>
+    <div class="job-meta">
+      <span>Grid Stability & Economic Analysis · 2023 – 2025</span>
+      <span>Python Development</span>
+    </div>
+    <div class="job-desc">
+      Developed forecasting models for wind power output to ensure <strong>grid stability</strong> 
+      and economic optimization. Wind power heavily depends on weather conditions causing grid 
+      instabilities.<br>
+      <strong>Tech:</strong> Python (weather data analysis + prediction models)
+    </div>
+  </div>
+
+      <!-- 2. WEBSITE -->
+  <div class="experience-item">
+    <div class="job-title">Personal Portfolio Website</div>
+    <div class="job-meta">
+      <span>Frontend Development · 2026</span>
+      <span>HTML5 | CSS3 | JavaScript</span>
+    </div>
+    <div class="job-desc">
+      Built fully responsive professional portfolio showcasing automation expertise using 
+      modern <strong>HTML5</strong>, <strong>CSS3 glassmorphism design</strong>, and vanilla 
+      JavaScript for smooth navigation, animations, and responsive layout.
+    </div>
+  </div>
+
+      <!-- 3. 012D24 -->
+  <div class="experience-item">
+    <div class="job-title">012D24 / FILTRATION & EMULSION SKID</div>
+    <div class="job-meta">
+      <span>ICAS Solution · 11/2024 – 01/2025</span>
+      <span>Similar: 016C23, 012P24, 012R24, 029P24</span>
+    </div>
+    <div class="job-desc">
+      <strong>PLC:</strong> TIA Portal programming<br>
+      <strong>SCADA:</strong> WinCC Explorer configuration<br>
+      <strong>Compliance:</strong> 21 CFR CSV + Computer System Config<br>
+      <strong>Reporting:</strong> MSSQL, Python, MS Report Builder<br>
+      <strong>Testing:</strong> FAT with MS Office documentation
+    </div>
+  </div>
+
+      <!-- 4. ECONOMIC -->
+  <div class="experience-item">
+    <div class="job-title">Economic Management of Renewable Energy</div>
+    <div class="job-meta">
+      <span>Bachelor's Project · 2022 – 2023</span>
+      <span>Grid Integration Analysis</span>
+    </div>
+    <div class="job-desc">
+      Estimated optimal combinations of renewable energy resources with actual grid systems.<br>
+      <strong>Software:</strong> HOMER "Hybrid Physics – Machine Learning Model"
+    </div>
+  </div>
+</section>
+
+    <!-- Education -->
+<section class="section" id="education">
+  <h2>Education</h2>
+  
+  <div class="experience-item">
+    <div class="job-title">Master's in Engineering (Automation & IT)</div>
+    <div class="job-meta">
+      <span>TH Köln · Gummersbach, Germany</span><span>2025 – 2027</span>
+    </div>
+  </div>
+
+  <div class="experience-item">
+    <div class="job-title">Bachelor's in Electrical Engineering</div>
+    <div class="job-meta">
+      <span>Savitribai Phule Pune University · Pune, India</span><span>2019 – 2023</span>
+    </div>
+    <div class="job-desc">
+      Best Outgoing Student of the Batch (GPA: 1.91/4)
+    </div>
+  </div>
+
+  <div class="experience-item">
+    <div class="job-title">Higher Secondary Certificate Examination</div>
+    <div class="job-meta">
+      <span>Fergusson College · Pune, Maharashtra, India</span><span>2017 – 2019</span>
+    </div>
+    <div class="job-desc">
+      Achieved GPA: 2.5/4
+    </div>
+  </div>
+</section>
+
+<!-- RESUMES SECTION - YOUR FILENAMES -->
+<section class="section" id="Resume">
+  <h2>📄 Resumes</h2>
+  
+  <div class="resume-grid">
+    <!-- ENGLISH CV -->
+    <div class="resume-card">
+      <div class="resume-icon">🇬🇧</div>
+      <h3>English CV</h3>
+      <p>Professional CV for international applications</p>
+      <div class="btn-group">
+        <a href="GAURAV_HEMANT_LOKHANDE_CV.pdf" target="_blank" class="btn-view english">
+          👁️ View
+        </a>
+        <a href="GAURAV_HEMANT_LOKHANDE_CV.pdf" download class="btn-download english">
+          📥 Download
+        </a>
+      </div>
+    </div>
+
+    <!-- GERMAN LEBENSLAAF -->
+    <div class="resume-card">
+      <div class="resume-icon">🇩🇪</div>
+      <h3>Lebenslauf (Deutsch)</h3>
+      <p>Deutscher Lebenslauf für Bewerbungen in Deutschland</p>
+      <div class="btn-group">
+        <a href="GAURAV_HEMANT_LOKHANDE_Lebenslauf.pdf" target="_blank" class="btn-view german">
+          👁️ Ansehen
+        </a>
+        <a href="GAURAV_HEMANT_LOKHANDE_Lebenslauf.pdf" download class="btn-download german">
+          📥 Herunterladen
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section class="section" id="About">
+  <h2>About Me</h2>
+  
+  <div class="experience-item">
+    <div class="job-title">🚀 Dual Specialization</div>
+    <div class="job-meta">
+      <span> <b>IT/Data Analysis</b> + <b>Industrial Automation</b> | TH Köln Master's</span>
+      <span>Part-time | Working Student | Full-time | Immediate</span>
+    </div>
+    <div class="job-desc">
+      Seeking <strong>Industrial Automation (PLC/SCADA)</strong> AND <strong>IT roles in Data Analysis & Python Development</strong>. 
+      Bringing 2+ years of automation experience in Industrial Automation combined with Python and database skills.
+    </div>
+  </div>
+
+  <div class="experience-item">
+    <div class="job-title">💻 IT & Data Analysis</div>
+    <div class="job-meta">
+      <span>Python | MSSQL/MySQL | Data Engineering | Reporting</span>
+      <span>Raspberry Pi | Python Development</span>
+    </div>
+    <div class="job-desc">
+      <strong>Data:</strong> Python scripting, SQL databases, automated reporting, data analysis<br>
+      <strong>Development:</strong> HTML/CSS, Git/GitHub, system configuration (21CFR)
+    </div>
+  </div>
+
+  <div class="experience-item">
+    <div class="job-title">🛠️ Industrial Automation</div>
+    <div class="job-meta">
+      <span>Siemens TIA Portal | WinCC SCADA | HMI | Commissioning</span>
+      <span>FAT/SAT | Industrial Communication</span>
+    </div>
+    <div class="job-desc">
+      PLC Programming, SCADA Systems, HMI Design, Process Commissioning, 
+      Industrial Instrumentation & System Integration.
+    </div>
+  </div>
+
+
+  <div class="experience-item">
+    <div class="job-title">📍 Available Now</div>
+    <div class="job-meta">
+      <span>Gummersbach, Germany | Flexible Hours</span>
+      <span><a href="mailto:gauravlokhande1100@gmail.com">Contact Me</a></span>
+    </div>
+  </div>
+</section>
+
+  <script>
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const targetId = this.dataset.target;
+
+        document.querySelectorAll('.section, .home-page').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+        this.classList.add('active');
+        document.querySelector(targetId).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
